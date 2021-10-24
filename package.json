@@ -1,0 +1,14 @@
+{
+  "private": true,
+  "name": "epic-game",
+  "version": "1.0.0",
+  "description": "An NFT Game made with Solidity and React",
+  "main": "index.js",
+  "repository": "https://github.com/FlorianBouron/epic-game.git",
+  "author": "Florian Bouron",
+  "license": "MIT",
+  "workspaces": [
+    "backend",
+    "frontend"
+  ]
+}
