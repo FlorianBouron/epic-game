@@ -7,6 +7,9 @@
   "repository": "https://github.com/FlorianBouron/epic-game.git",
   "author": "Florian Bouron",
   "license": "MIT",
+  "scripts": {
+    "runContract": "yarn workspace backend hardhat run scripts/run.js"
+  },
   "workspaces": [
     "backend",
     "frontend"
