@@ -8,7 +8,11 @@ const main = async () => {
       'https://i.imgur.com/WMB6g9u.png'
     ],
     [100, 200, 300],
-    [100, 50, 25]
+    [100, 50, 25],
+    "Mewtwo",
+    "https://i.ibb.co/LvnZfDD/Mewtwo-Journeys.png",
+    10000,
+    50
   );
   await gameContract.deployed();
   console.log('Contract deployed to:', gameContract.address);
