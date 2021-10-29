@@ -130,4 +130,37 @@ BigBoss public bigBoss;
     string memory output = string(abi.encodePacked('data:application/json;base64,', json));
     return output;
   }
+
+  function attackBoss() public {
+    uint256 nftTokenIdOfPlayer = nftHolders[msg.sender];
+    CharacterAttributes storage player = nftHolderAttributes[nftTokenIdOfPlayer];
+    console.log("\nPlayer w/ character %s about to attack. Has %s HP and %s AD", player.name, player.hp, player.attackDamage);
+    console.log("Boss %s has %s HP and %s AD", bigBoss.name, bigBoss.hp, bigBoss.attackDamage);
+
+    require (
+      player.hp > 0,
+      "Error: character must have HP to attack boss."
+    );
+
+    require (
+      bigBoss.hp > 0,
+      "Error: boss must have HP to attack boss."
+    );
+
+    // Allow player to attack boss.
+    if (bigBoss.hp < player.attackDamage) {
+      bigBoss.hp = 0;
+    } else {
+      bigBoss.hp = bigBoss.hp - player.attackDamage;
+    }
+
+    // Allow boss to attack player.
+    if (player.hp < bigBoss.attackDamage) {
+      player.hp = 0;
+    } else {
+      player.hp = player.hp - bigBoss.attackDamage;
+    }
+
+    console.log("Boss attacked player. New player hp: %s\n", player.hp);
+  }
 }
