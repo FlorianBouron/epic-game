@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { ethers } from 'ethers';
 import SelectCharacter from './components/SelectCharacter';
+import Arena from './components/Arena';
 import { CONTRACT_ADDRESS } from './constants';
 import myEpicGame from './utils/MyEpicGame.json';
 import transformCharacterData from './utils/transformCharacterData';
@@ -61,6 +62,8 @@ const App = () => {
       );
     } else if (currentAccount && !characterNFT) {
       return <SelectCharacter setCharacterNFT={setCharacterNFT} />;
+    } else if (currentAccount && characterNFT) {
+      return <Arena characterNFT={characterNFT} setCharacterNFT={setCharacterNFT} />;
     }
   };
 
@@ -96,7 +99,7 @@ const App = () => {
     <div className="App">
       <div className="container">
         <div className="header-container">
-          <p className="header gradient-text">⚔️ Metaverse Slayer ⚔️</p>
+          <p className="header gradient-text">⚔️ Metaverse Pokémon ⚔️</p>
           <p className="sub-text">Team up to protect the Metaverse!</p>
           {renderContent()}
         </div>
