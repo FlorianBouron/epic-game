@@ -3,6 +3,7 @@ import { ethers } from 'ethers';
 import SelectCharacter from './components/SelectCharacter';
 import { CONTRACT_ADDRESS } from './constants';
 import myEpicGame from './utils/MyEpicGame.json';
+import transformCharacterData from './utils/transformCharacterData';
 import './App.css';
 
 const App = () => {
@@ -40,22 +41,6 @@ const App = () => {
     } catch (error) {
       console.log(error);
     }
-  };
-
-  const transformCharacterData = (characterData: {
-    name: string;
-    imageURI: string;
-    hp: any;
-    maxHp: any;
-    attackDamage: any;
-  }) => {
-    return {
-      name: characterData.name,
-      imageURI: characterData.imageURI,
-      hp: characterData.hp.toNumber(),
-      maxHp: characterData.maxHp.toNumber(),
-      attackDamage: characterData.attackDamage.toNumber(),
-    };
   };
 
   const renderContent = () => {
