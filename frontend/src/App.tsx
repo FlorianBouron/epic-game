@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { ethers } from 'ethers';
 import SelectCharacter from './components/SelectCharacter';
 import Arena from './components/Arena';
+import LoadingIndicator from './components/LoadingIndicator';
 import { CONTRACT_ADDRESS } from './constants';
 import myEpicGame from './utils/MyEpicGame.json';
 import transformCharacterData from './utils/transformCharacterData';
@@ -10,6 +11,7 @@ import './App.css';
 const App = () => {
   const [currentAccount, setCurrentAccount] = useState(null);
   const [characterNFT, setCharacterNFT] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const checkIfWalletIsConnected = async () => {
       const { ethereum } = window;
@@ -45,6 +47,9 @@ const App = () => {
   };
 
   const renderContent = () => {
+    if (isLoading) {
+      return <LoadingIndicator />;
+    }
     if (!currentAccount) {
       return (
         <div className="connect-wallet-container">
@@ -87,6 +92,7 @@ const App = () => {
       } else {
         console.log('No character NFT found');
       }
+      setIsLoading(false);
     };
 
     if (currentAccount) {

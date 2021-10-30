@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { ethers } from 'ethers';
+import LoadingIndicator from '../LoadingIndicator';
 import { CONTRACT_ADDRESS } from '../../constants';
 import transformCharacterData from '../../utils/transformCharacterData';
 import myEpicGame from '../../utils/MyEpicGame.json';
@@ -9,6 +10,7 @@ const Arena = ({ characterNFT, setCharacterNFT }: any) => {
   const [gameContract, setGameContract] = useState<any>(null);
   const [boss, setBoss] = useState<any>(null);
   const [attackState, setAttackState] = useState('');
+  const [showToast, setShowToast] = useState(false);
 
   useEffect(() => {
     const { ethereum } = window;
@@ -66,6 +68,10 @@ const Arena = ({ characterNFT, setCharacterNFT }: any) => {
         await attackTxn.wait();
         console.log('attackTxn:', attackTxn);
         setAttackState('hit');
+        setShowToast(true);
+        setTimeout(() => {
+          setShowToast(false);
+        }, 5000);
       }
     } catch (error) {
       console.error('Error attacking boss:', error);
@@ -75,6 +81,11 @@ const Arena = ({ characterNFT, setCharacterNFT }: any) => {
 
   return (
     <div className="arena-container">
+      {boss && (
+        <div id="toast" className="show">
+          <div id="desc">{`💥 ${boss.name} was hit for ${characterNFT.attackDamage}!`}</div>
+        </div>
+      )}
       {boss && (
         <div className="boss-container">
           {/* Add attackState to the className! After all, it's just class names */}
@@ -93,6 +104,12 @@ const Arena = ({ characterNFT, setCharacterNFT }: any) => {
               {`💥 Attack ${boss.name}`}
             </button>
           </div>
+          {attackState === 'attacking' && (
+            <div className="loading-indicator">
+              <LoadingIndicator />
+              <p>Attacking ⚔️</p>
+            </div>
+          )}
         </div>
       )}
       {characterNFT && (
