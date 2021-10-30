@@ -8,6 +8,7 @@
   "author": "Florian Bouron",
   "license": "MIT",
   "scripts": {
+    "start": "yarn workspace frontend start",
     "runContract": "yarn workspace backend hardhat run scripts/run.js",
     "deployContract": "yarn workspace backend hardhat run scripts/deploy.js --network rinkeby"
   },
