@@ -1,10 +1,13 @@
 import { useEffect, useState } from 'react';
+import { ethers } from 'ethers';
 import SelectCharacter from './components/SelectCharacter';
+import { CONTRACT_ADDRESS } from './constants';
+import myEpicGame from './utils/MyEpicGame.json';
 import './App.css';
 
 const App = () => {
   const [currentAccount, setCurrentAccount] = useState(null);
-  const [characterNFT, setCharacterNFT] = useState(null);
+  const [characterNFT, setCharacterNFT] = useState<any>(null);
 
   const checkIfWalletIsConnected = async () => {
       const { ethereum } = window;
@@ -39,6 +42,22 @@ const App = () => {
     }
   };
 
+  const transformCharacterData = (characterData: {
+    name: string;
+    imageURI: string;
+    hp: any;
+    maxHp: any;
+    attackDamage: any;
+  }) => {
+    return {
+      name: characterData.name,
+      imageURI: characterData.imageURI,
+      hp: characterData.hp.toNumber(),
+      maxHp: characterData.maxHp.toNumber(),
+      attackDamage: characterData.attackDamage.toNumber(),
+    };
+  };
+
   const renderContent = () => {
     if (!currentAccount) {
       return (
@@ -63,6 +82,30 @@ const App = () => {
   useEffect(() => {
     checkIfWalletIsConnected();
   }, []);
+
+  useEffect(() => {
+    const fetchNFTMetadata = async () => {
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
+      const gameContract = new ethers.Contract(
+        CONTRACT_ADDRESS,
+        myEpicGame.abi,
+        signer
+      );
+
+      const txn = await gameContract.checkIfUserHasNFT();
+      if (txn.name) {
+        setCharacterNFT(transformCharacterData(txn));
+      } else {
+        console.log('No character NFT found');
+      }
+    };
+
+    if (currentAccount) {
+      console.log('CurrentAccount:', currentAccount);
+      fetchNFTMetadata();
+    }
+  }, [currentAccount]);
 
   return (
     <div className="App">
